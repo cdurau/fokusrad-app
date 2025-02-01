@@ -1,30 +1,31 @@
-import { useState } from "react"
+import { useState, KeyboardEvent, ChangeEvent } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 
-const FocusWheelApp = () => {
-    const [goal, setGoal] = useState("")
-    const [thoughts, setThoughts] = useState([])
-    const [newThought, setNewThought] = useState("")
-    const [completed, setCompleted] = useState(false)
+const FocusWheelApp: React.FC = () => {
+    // State mit expliziten Typen
+    const [goal, setGoal] = useState<string>("")
+    const [thoughts, setThoughts] = useState<string[]>([])
+    const [newThought, setNewThought] = useState<string>("")
+    const [completed, setCompleted] = useState<boolean>(false)
 
-    const addThought = () => {
+    const addThought = (): void => {
         if (newThought.trim() !== "") {
             setThoughts([...thoughts, newThought])
             setNewThought("")
         }
     }
 
-    const handleKeyPress = e => {
+    const handleKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>): void => {
         if (e.key === "Enter") {
             e.preventDefault()
             addThought()
         }
     }
 
-    const markAsComplete = () => {
+    const markAsComplete = (): void => {
         setCompleted(true)
     }
 
@@ -32,13 +33,14 @@ const FocusWheelApp = () => {
         <div className="min-h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 md:p-8">
             <div className="max-w-3xl mx-auto space-y-6">
                 <h1 className="text-3xl md:text-4xl font-bold text-white text-center">Focus Wheel Prozess</h1>
+
                 <Card className="p-4 md:p-6 shadow-xl bg-white rounded-2xl">
                     <CardContent className="space-y-4">
                         <h2 className="text-xl md:text-2xl font-semibold text-gray-800">Schritt 1: Ziel setzen</h2>
                         <Input
                             placeholder="Schreibe dein Ziel hier auf..."
                             value={goal}
-                            onChange={e => setGoal(e.target.value)}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => setGoal(e.target.value)}
                         />
                     </CardContent>
                 </Card>
@@ -52,7 +54,7 @@ const FocusWheelApp = () => {
                             <Textarea
                                 placeholder="Schreibe einen positiven Gedanken über dein Ziel..."
                                 value={newThought}
-                                onChange={e => setNewThought(e.target.value)}
+                                onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setNewThought(e.target.value)}
                                 onKeyDown={handleKeyPress}
                             />
                             <Button
